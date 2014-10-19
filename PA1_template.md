@@ -1,29 +1,39 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
-```{r echo=FALSE}
-setwd("~/Documents/Coursera/ReproducibleResearch/RepData_PeerAssessment1")
-```
+
 
 ## Loading and preprocessing the data
-```{r}
+
+```r
 activity_data <- read.csv("activity.csv",header=T)
 # new data set without NA
 activity <- na.exclude(activity_data)
-
 ```
 
 
 
 ## What is mean total number of steps taken per day?
-```{r}
+
+```r
 hist(activity$steps)
+```
+
+![plot of chunk unnamed-chunk-3](./PA1_template_files/figure-html/unnamed-chunk-3.png) 
+
+```r
 mean(activity$steps)
+```
+
+```
+## [1] 37.38
+```
+
+```r
 median(activity$steps)
+```
+
+```
+## [1] 0
 ```
 
 
