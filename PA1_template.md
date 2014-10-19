@@ -16,8 +16,8 @@ activity <- na.exclude(activity_data)
 
 ```r
 library(plyr)
-daily_steps <- ddply(activity, .(date), summarise, steps=sum(steps))
-hist(daily_steps$steps, xlab="steps per day")
+daily_steps <- ddply(activity, ~date, summarise, steps=sum(steps))
+hist(daily_steps$steps, main = 'Total number of daily steps', xlab='Number of steps')
 ```
 
 ![plot of chunk unnamed-chunk-3](./PA1_template_files/figure-html/unnamed-chunk-3.png) 
@@ -44,7 +44,7 @@ median(daily_steps$steps)
 ## What is the average daily activity pattern?
 
 ```r
-average_date <- ddply(activity, .(interval), summarise, steps=mean(steps))
+average_date <- ddply(activity, ~interval, summarise, steps=mean(steps))
 plot(average_date$interval, average_date$steps, type="l", xlab="5-minute interval", 
      ylab="Average steps",main="Average daily activity")
 ```
@@ -62,7 +62,7 @@ average_date[average_date$steps==max(average_date$steps),]
 ```
 
 ```r
-colnames(average_date)[2] <- "intervalAvg"
+colnames(average_date)[2] <- "average_interval"
 ```
 
 
@@ -71,7 +71,7 @@ colnames(average_date)[2] <- "intervalAvg"
 
 ```r
 #  missing values
-sum(is.na(activity_data$steps))
+sum(is.na(activity_data))
 ```
 
 ```
@@ -88,10 +88,10 @@ merged <- arrange(join(activity_data, average_date), interval)
 ```
 
 ```r
-# the new dataset 
-merged$steps[is.na(merged$steps)] <- merged$intervalAvg[is.na(merged$steps)]
+# the new dataset , the missing "steps" are repaced by the avergage fo that interval
+merged$steps[is.na(merged$steps)] <- merged$average_interval[is.na(merged$steps)]
 # plot the histogram
-new_daily_steps <- ddply(merged, .(date), summarise, steps=sum(steps))
+new_daily_steps <- ddply(merged, ~date, summarise, steps=sum(steps))
 hist(new_daily_steps$steps, main="Number of Steps", 
      xlab="steps taken each day",,)
 ```
@@ -118,7 +118,12 @@ median(new_daily_steps$steps)
 ```r
 daily_steps_1 <- sum(activity$steps)
 daily_steps_2 <- sum(merged$steps)
-diff <- daily_steps_2 -daily_steps_1 []
+diff <- daily_steps_2 - daily_steps_1
+print(diff)
+```
+
+```
+## [1] 86130
 ```
 
 
