@@ -134,8 +134,8 @@ print(diff)
 library(lattice)
 weekdays <- weekdays(as.Date(merged$date))
 data_weekdays <- transform(merged, day=weekdays)
-data_weekdays$wk <- ifelse(data_weekdays$day %in% c("Saturday", "Sunday"),"weekend", "weekday")
-average_week <- ddply(data_weekdays, .(interval, wk), summarise, steps=mean(steps))
+data_weekdays$wk <- as.factor(ifelse(data_weekdays$day %in% c("Saturday", "Sunday"),"weekend", "weekday"))
+average_week <- ddply(data_weekdays, ~interval + wk, summarise, steps=mean(steps))
 
 xyplot(steps ~ interval | wk, data = average_week, layout = c(1, 2), type="l")
 ```
